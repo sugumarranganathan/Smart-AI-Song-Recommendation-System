@@ -4,243 +4,86 @@ https://colab.research.google.com/drive/1VYW9TXIpL2CM_ImnJQp9GCwFPNtd-Kkx#scroll
 https://cee822409b42eabf11.gradio.live/
 
 # 🎵 Smart AI Song Recommendation System
-    Using Word Embedding
 
 ## 📌 Project Overview
 
-The **Smart AI Song Recommendation System** is a Natural Language Processing (NLP) project that recommends similar songs based on the semantic meaning of song lyrics.
-
-Instead of recommending songs using genres or popularity, this system understands the meaning of lyrics using **Word2Vec Word Embeddings** and finds similar songs using **Cosine Similarity**.
-
-The application provides an interactive **Gradio Web Interface**, allowing users to search for a song and receive the **Top 5 most similar song recommendations** instantly.
+Choosing the right song from millions of available tracks can be difficult and time-consuming. Users often spend more time searching for music than enjoying it. This project provides an intelligent solution by recommending songs that are similar to a user's favorite track. Users simply search for a song, select it, and instantly receive a list of recommended songs along with similarity scores. The application makes music discovery easier, faster, and more enjoyable.
 
 ---
 
-# 🎯 Problem Statement
+## 🎯 Problem Statement
 
-Traditional music recommendation systems often rely on artist names, genres, popularity, or user listening history. These approaches may fail to recommend songs that share similar lyrical meaning or emotions.
-
-This project aims to build an AI-powered recommendation system that analyzes song lyrics using **Word Embedding (Word2Vec)** and recommends semantically similar songs using **Cosine Similarity**.
+With millions of songs available, choosing the right music has become more challenging than ever. Users often miss great songs because they do not know what to search for next. This project helps users find songs related to the music they already enjoy. It provides instant recommendations, reduces the effort of manual searching, and makes discovering new music more convenient. The system offers a better listening experience and encourages users to explore more songs. It is suitable for music streaming platforms, entertainment services, and digital music libraries that want to improve user satisfaction.
 
 ---
 
-# 💡 Solution
+## 💡 Solution
 
-The proposed system uses **Natural Language Processing (NLP)** techniques to understand the semantic meaning of song lyrics.
-
-The workflow is as follows:
-
-1. Load the song lyrics dataset.
-2. Clean and preprocess the lyrics.
-3. Train a Word2Vec model on the lyrics.
-4. Generate word embeddings.
-5. Create a song embedding by averaging all word vectors.
-6. Compute cosine similarity between songs.
-7. Recommend the Top 5 most similar songs.
-8. Display recommendations using a Gradio web interface.
+The Smart AI Song Recommendation System allows users to search for their favorite song using a simple search box. After selecting a song, the system instantly recommends the top five similar songs. Each recommendation includes the song name, artist, and similarity score. The application makes discovering new music quick and effortless, eliminating the need for manual searching. It provides a smooth and user-friendly experience for exploring related songs. This solution improves music discovery and helps users enjoy a more personalized listening experience.
 
 ---
 
-# 🚀 Features
+## 🚀 Features
 
-- 🎵 AI-powered song recommendation
-- 🔍 Partial song search
-- 🔠 Case-insensitive search
-- 🧠 Word2Vec word embeddings
-- 📈 Cosine Similarity
-- 🎧 Interactive Gradio interface
-- ⭐ Top 5 similar song recommendations
+- 🔍 Search songs by keyword
+- 🎵 Select a song from matching results
+- ⭐ Get Top 5 similar song recommendations
+- 👤 Displays artist name
+- 📊 Shows similarity score
 - ⚡ Fast recommendation system
+- 💻 Simple and user-friendly interface
+- 🌐 Deployable on Hugging Face Spaces
 
 ---
 
-# 🧠 Technologies Used
+## 🛠️ Technologies Used
 
 - Python
-- Natural Language Processing (NLP)
-- Word2Vec
-- Gensim
-- Scikit-learn
+- Gradio
 - Pandas
 - NumPy
-- Gradio
+- Scikit-learn
+- Pickle
 
 ---
 
-# 📂 Project Workflow
-
-```
-Song Lyrics Dataset
-        │
-        ▼
-Text Preprocessing
-        │
-        ▼
-Word2Vec Training
-        │
-        ▼
-Word Embeddings
-        │
-        ▼
-Song Embeddings
-        │
-        ▼
-Cosine Similarity
-        │
-        ▼
-Top 5 Similar Songs
-        │
-        ▼
-Gradio Web Application
-```
-
----
-
-# 📊 Machine Learning Workflow
-
-```
-Dataset
-   │
-   ▼
-Preprocessing
-   │
-   ▼
-Tokenization
-   │
-   ▼
-Word2Vec
-   │
-   ▼
-Song Embeddings
-   │
-   ▼
-Cosine Similarity
-   │
-   ▼
-Recommendation Engine
-```
-
----
-
-# 📁 Project Structure
+## 📂 Project Structure
 
 ```
 Smart-AI-Song-Recommendation-System/
-
-│── app.py
-│── songs_dataframe.pkl
-│── song_embeddings.pkl
-│── requirements.txt
-│── README.md
-```
-
----
-
-# ▶️ How to Run the Project
-
-### Step 1
-
-Install the required libraries.
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-### Step 2
-
-Run the application.
-
-```bash
-python app.py
-```
-
-or
-
-```bash
-gradio app.py
-```
-
----
-
-### Step 3
-
-Open the generated Gradio link in your browser.
-
----
-
-# 🖥️ Application Interface
-
-The Gradio application provides:
-
-- Search box
-- Song selection
-- Song recommendation
-- Top 5 similar songs
-- Similarity percentage
-
----
-
-# 📈 Algorithm Used
-
-### Word2Vec
-
-Word2Vec converts words into dense numerical vectors that capture semantic relationships between words.
-
----
-
-### Cosine Similarity
-
-Cosine Similarity measures how similar two song embeddings are by comparing the angle between their vectors.
-
----
-
-# 📊 Output
-
-Input
+│
+├── app.py
+├── songs_dataframe.pkl
+├── song_embeddings.pkl
+├── requirements.txt
+├── README.md
 
 ```
-love
-```
 
-↓
 
-Output
+Upload the following files to your Hugging Face Space:
 
-```
-Top 5 Similar Songs
-
-Love Story
-Love Yourself
-Love Me Do
-L.O.V.E.
-Baby Girl
-```
+- app.py
+- songs_dataframe.pkl
+- song_embeddings.pkl
+- requirements.txt
+- README.md
 
 ---
 
-# 🎯 Advantages
+## 📷 Application Preview
 
-- Semantic song recommendation
-- Better than keyword matching
-- Understands lyric meaning
-- Easy to use
-- Fast recommendation
-- Interactive UI
+### Search Song
 
----
+Search for your favorite song using the search box.
 
-# 📌 Applications
+### Recommendation Results
 
-- Music Streaming Platforms
-- AI Music Assistants
-- Playlist Generation
-- Smart Music Search
-- Entertainment Recommendation Systems
+View the Top 5 recommended songs with artist names and similarity scores.
 
 
-# 👨‍💻 Prepared by
+
+## 👨‍💻 Prepared by
 
 **R. Sugumar, M.B.A.,**
 
