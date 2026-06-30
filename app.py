@@ -1,122 +1,139 @@
 import gradio as gr
 import pandas as pd
-import numpy as np
 import pickle
 from sklearn.metrics.pairwise import cosine_similarity
 
-# ==========================================
+# ======================================================
 # Load Data
-# ==========================================
+# ======================================================
 
 df = pd.read_pickle("songs_dataframe.pkl")
 
 with open("song_embeddings.pkl", "rb") as f:
     song_embeddings = pickle.load(f)
 
-# ==========================================
-# Find Matching Songs
-# ==========================================
+# ======================================================
+# Search Song
+# ======================================================
 
 def search_song(keyword):
 
-    if keyword.strip() == "":
-        return gr.update(choices=[], value=None)
+    keyword = str(keyword).strip().lower()
 
-    keyword = keyword.lower().strip()
+    if keyword == "":
+        return gr.update(choices=[], value=None)
 
     matches = df[
         df["song_name"].str.lower().str.contains(keyword, na=False)
-    ]
+    ].head(100)
 
-    if matches.empty:
+    if len(matches) == 0:
         return gr.update(choices=[], value=None)
 
-    song_list = (
+    songs = (
         matches["song_name"]
         + "  |  "
         + matches["artist"]
     ).tolist()
 
     return gr.update(
-        choices=song_list,
-        value=song_list[0]
+        choices=songs,
+        value=songs[0]
     )
 
-# ==========================================
-# Recommendation Function
-# ==========================================
+
+# ======================================================
+# Recommendation
+# ======================================================
 
 def recommend_song(selected_song):
 
-    if selected_song is None:
+    if not selected_song:
         return "❌ Please search and select a song."
 
-    song_name = selected_song.split(" | ")[0]
+    song_name = selected_song.split("  |  ")[0]
 
     idx = df[df["song_name"] == song_name].index[0]
 
-    similarity_scores = cosine_similarity(
+    scores = cosine_similarity(
         [song_embeddings[idx]],
         song_embeddings
     )[0]
 
-    similar_indices = similarity_scores.argsort()[::-1]
+    similar = scores.argsort()[::-1]
 
-    result = []
+    output = []
 
-    result.append(f"🎵 Selected Song : {df.iloc[idx]['song_name']}")
-    result.append(f"👤 Artist : {df.iloc[idx]['artist']}")
-    result.append("")
-    result.append("=" * 45)
-    result.append("Top 5 Recommended Songs")
-    result.append("=" * 45)
-    result.append("")
+    output.append("🎵 SELECTED SONG")
+    output.append("-" * 50)
+    output.append(f"Song   : {df.iloc[idx]['song_name']}")
+    output.append(f"Artist : {df.iloc[idx]['artist']}")
+    output.append("")
+    output.append("⭐ TOP 5 RECOMMENDED SONGS")
+    output.append("-" * 50)
+    output.append("")
 
     count = 1
 
-    for i in similar_indices:
+    for i in similar:
 
         if i == idx:
             continue
 
-        result.append(
-            f"{count}. {df.iloc[i]['song_name']}"
-        )
-
-        result.append(
-            f"   👤 Artist : {df.iloc[i]['artist']}"
-        )
-
-        result.append(
-            f"   ⭐ Similarity : {similarity_scores[i]:.3f}"
-        )
-
-        result.append("")
+        output.append(f"{count}. {df.iloc[i]['song_name']}")
+        output.append(f"   Artist      : {df.iloc[i]['artist']}")
+        output.append(f"   Similarity  : {scores[i]:.3f}")
+        output.append("")
 
         count += 1
 
         if count > 5:
             break
 
-    return "\n".join(result)
+    return "\n".join(output)
 
-# ==========================================
+
+# ======================================================
+# CSS
+# ======================================================
+
+css = """
+.gradio-container{
+    max-width:950px !important;
+    margin:auto;
+}
+
+footer{
+    visibility:hidden;
+}
+
+textarea{
+    font-size:15px !important;
+}
+"""
+
+
+# ======================================================
 # UI
-# ==========================================
+# ======================================================
 
-with gr.Blocks(title="Smart AI Song Recommendation System") as demo:
+with gr.Blocks(
+    title="Smart AI Song Recommendation System",
+    css=css,
+    fill_width=True
+) as demo:
 
     gr.Markdown(
         """
 # 🎵 Smart AI Song Recommendation System
 
-### Recommend similar songs using **Word2Vec** and **Cosine Similarity**
-        """
+Recommend similar songs using **Word2Vec** and **Cosine Similarity**.
+"""
     )
 
     with gr.Row():
 
-        with gr.Column():
+        with gr.Column(scale=1):
 
             keyword = gr.Textbox(
                 label="🔍 Search Song",
@@ -139,11 +156,16 @@ with gr.Blocks(title="Smart AI Song Recommendation System") as demo:
                 variant="primary"
             )
 
-        with gr.Column():
+            clear_btn = gr.ClearButton(
+                [keyword, song_dropdown]
+            )
+
+        with gr.Column(scale=2):
 
             output = gr.Textbox(
                 label="Recommendations",
-                lines=18
+                lines=20,
+                interactive=False
             )
 
     search_btn.click(
@@ -158,4 +180,5 @@ with gr.Blocks(title="Smart AI Song Recommendation System") as demo:
         outputs=output
     )
 
+demo.queue()
 demo.launch()
